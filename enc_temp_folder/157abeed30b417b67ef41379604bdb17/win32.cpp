@@ -1,3 +1,5 @@
+//TODO better message handling
+
 #include <windows.h>
 #include <tchar.h>
 #include <strsafe.h>
@@ -125,7 +127,6 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		else
 		{
 			//game logic
-			//hangs because only rendering in message window
 
 		}
 	}
