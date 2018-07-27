@@ -1,13 +1,39 @@
-//TODO error handling method
 //TODO better message handling
 
 #include <windows.h>
 #include <tchar.h>
 #include <strsafe.h>
 
-void ErrorExit(LPTSTR lpszFunction)
+void PrintErrorMsg()
 {
-	
+	LPTSTR errorText = NULL;
+
+	FormatMessage(
+		// use system message tables to retrieve error text
+		FORMAT_MESSAGE_FROM_SYSTEM
+		// allocate buffer on local heap for error text
+		| FORMAT_MESSAGE_ALLOCATE_BUFFER
+		// Important! will fail otherwise, since we're not 
+		// (and CANNOT) pass insertion parameters
+		| FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,    // unused with FORMAT_MESSAGE_FROM_SYSTEM
+		GetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&errorText,  // output 
+		0, // minimum size for output buffer
+		NULL);   // arguments - see note 
+
+	if (NULL != errorText)
+	{
+		MessageBox(NULL,
+			_T(errorText),
+			_T("ERROR"),
+			NULL);
+
+		// release memory allocated by FormatMessage()
+		LocalFree(errorText);
+		errorText = NULL;
+	}
 }
 
 
@@ -58,11 +84,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 
 	if (!RegisterClassEx(&wcex))
 	{
-		MessageBox(NULL,
-			_T("CALL to RegisterClassEX failed!"),
-			_T("ERROR"),
-			NULL);
-
+		PrintErrorMsg();
 		return 1;
 	}
 
@@ -81,35 +103,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		NULL);
 	if (!hWnd)
 	{
-		LPTSTR errorText = NULL;
-
-		FormatMessage(
-			// use system message tables to retrieve error text
-			FORMAT_MESSAGE_FROM_SYSTEM
-			// allocate buffer on local heap for error text
-			| FORMAT_MESSAGE_ALLOCATE_BUFFER
-			// Important! will fail otherwise, since we're not 
-			// (and CANNOT) pass insertion parameters
-			| FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL,    // unused with FORMAT_MESSAGE_FROM_SYSTEM
-			GetLastError(),
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-			(LPTSTR)&errorText,  // output 
-			0, // minimum size for output buffer
-			NULL);   // arguments - see note 
-
-		if (NULL != errorText)
-		{
-			MessageBox(NULL,
-				_T(errorText),
-				_T("ERROR"),
-				NULL);
-
-			// release memory allocated by FormatMessage()
-			LocalFree(errorText);
-			errorText = NULL;
-		}
-
+		PrintErrorMsg();
 		return 1;
 	}
 
