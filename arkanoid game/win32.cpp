@@ -1,6 +1,7 @@
-#include <windows.h>
-#include <tchar.h>
-#include <strsafe.h>
+#include "win32.h"
+
+const char * m_windowClassName;
+HINSTANCE m_hInstance;
 
 void PrintErrorMsg()
 {
@@ -35,29 +36,6 @@ void PrintErrorMsg()
 }
 
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	PAINTSTRUCT ps;
-	HDC hdc;
-	TCHAR greeting[] = _T("Hello World!");
-
-	switch (message)
-	{
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		TextOut(hdc, 5, 5, greeting, _tcslen(greeting));
-
-		EndPaint(hWnd, &ps);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-		break;
-	}
-	return 0;
-}
 
 
 int CALLBACK WinMain(HINSTANCE hInstance,
@@ -65,20 +43,20 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
+	m_hInstance = hInstance;
+	m_windowClassName = "szWindowClass";
 	WNDCLASSEX wcex;
+	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = WndProc;
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
-	wcex.hInstance = hInstance;
-	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+	wcex.hInstance = hInstance; 
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = "szWindowClass";
-	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+	wcex.lpszClassName = m_windowClassName;
 
 	if (!RegisterClassEx(&wcex))
 	{
@@ -88,13 +66,22 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 
 	static TCHAR szTitle[] = _T("Windows App");
 
+	RECT wr = { 0,0,500,100 };
+	int width = 500;
+	int height = 100;
+	SetRect(&wr, 0, 0, width, height);
+	AdjustWindowRect(&wr,
+		WS_OVERLAPPEDWINDOW,
+		false ); // no menu
+
 	HWND hWnd = CreateWindow(
 		wcex.lpszClassName,
 		szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		500, 100,
+		(wr.right-wr.left),
+		(wr.bottom-wr.top),
 		NULL,
 		NULL,
 		hInstance,
@@ -116,7 +103,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 
 	while (WM_QUIT != msg.message)
 	{
-		gotMsg = PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
+		gotMsg = PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE);
 		if (gotMsg)
 		{
 			TranslateMessage(&msg);
@@ -124,11 +111,41 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		}
 		else
 		{
+			int a = 2;
 			//game logic
 			//hangs because only rendering in message window
 
 		}
 	}
 	return (int)msg.wParam;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+		case WM_CLOSE:
+		{
+			HMENU hMenu;
+			hMenu = GetMenu(hWnd);
+			if (hMenu != NULL);
+			{
+				DestroyMenu(hMenu);
+			}
+			DestroyWindow(hWnd);
+			UnregisterClass(
+				m_windowClassName,
+				m_hInstance
+			);
+			return 0;
+		}
+		case WM_DESTROY:
+		{
+			//does not properly close program, only closes window
+			PostQuitMessage(0);
+			break;
+		}
+	}
+	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
