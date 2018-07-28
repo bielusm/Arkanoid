@@ -1,7 +1,10 @@
 #include "win32.h"
 
+
+
 const char * m_windowClassName;
 HINSTANCE m_hInstance;
+
 
 void PrintErrorMsg()
 {
@@ -67,8 +70,8 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	static TCHAR szTitle[] = _T("Windows App");
 
 	RECT wr = { 0,0,500,100 };
-	int width = 500;
-	int height = 100;
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
 	SetRect(&wr, 0, 0, width, height);
 	AdjustWindowRect(&wr,
 		WS_OVERLAPPEDWINDOW,
@@ -95,6 +98,8 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
+	renderer.InitD3D(hWnd);
+
 	//main message loop
 	bool gotMsg;
 	MSG msg;
@@ -114,9 +119,11 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 			int a = 2;
 			//game logic
 			//hangs because only rendering in message window
-
+			renderer.RenderFrame();
 		}
 	}
+
+	renderer.CleanD3D();
 	return (int)msg.wParam;
 }
 
