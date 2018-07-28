@@ -118,9 +118,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 				break;
 
 		}
-			int a = 2;
-			//game logic
-			//hangs because only rendering in message window
+
 			renderer.RenderFrame();
 	}
 
