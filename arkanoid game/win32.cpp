@@ -106,21 +106,22 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	msg.message = WM_NULL;
 	PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
 
-	while (WM_QUIT != msg.message)
+	while (TRUE)
 	{
-		gotMsg = PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE);
+		gotMsg = PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 		if (gotMsg)
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			if (msg.message == WM_QUIT)
+				break;
+
 		}
-		else
-		{
 			int a = 2;
 			//game logic
 			//hangs because only rendering in message window
 			renderer.RenderFrame();
-		}
 	}
 
 	renderer.CleanD3D();
@@ -131,27 +132,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-		case WM_CLOSE:
-		{
-			HMENU hMenu;
-			hMenu = GetMenu(hWnd);
-			if (hMenu != NULL);
-			{
-				DestroyMenu(hMenu);
-			}
-			DestroyWindow(hWnd);
-			UnregisterClass(
-				m_windowClassName,
-				m_hInstance
-			);
-			return 0;
-		}
 		case WM_DESTROY:
 		{
-			//does not properly close program, only closes window
 			PostQuitMessage(0);
-			break;
-		}
+			return 0;
+
+		} break;
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
