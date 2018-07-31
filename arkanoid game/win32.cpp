@@ -123,7 +123,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	auto t0 = clock::now();
 	auto t1 = clock::now();
 	game = new Game(hWnd);
-
+	float moveAmount;
 
 	while (TRUE)
 	{
@@ -140,11 +140,12 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		t1 = clock::now();
 		fsec fs = t1 - t0;
 		t0 = t1;
-		lag += fs.count();
-		while (lag >= timestep)
+		lag = fs.count();
+		while (lag > 0)
 		{
-			lag -= timestep;
-			game->go(timestep);
+			moveAmount = min(timestep, lag);
+			lag -= moveAmount;
+			game->go(moveAmount);
 			//other game logic
 		}
 	}
