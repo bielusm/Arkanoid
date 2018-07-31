@@ -1,4 +1,9 @@
 #include "win32.h"
+#include <chrono>
+using namespace std::chrono_literals;
+
+//1/60fps = 16ms
+constexpr float timestep = 0.16f;
 
 const char * m_windowClassName;
 HINSTANCE m_hInstance;
@@ -93,12 +98,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		return 1;
 	}
 
-	graphics = new Graphics();
-	if (!graphics->Init(hWnd))
-	{
-		delete graphics;
-		return -1;
-	}
+
 
 
 
@@ -113,6 +113,18 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	msg.message = WM_NULL;
 	PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
 
+
+
+	typedef std::chrono::high_resolution_clock clock;
+	typedef std::chrono::milliseconds ms;
+	typedef std::chrono::duration<float> fsec;
+	float lag = 0.0f;
+
+	auto t0 = clock::now();
+	auto t1 = clock::now();
+	game = new Game(hWnd);
+
+
 	while (TRUE)
 	{
 		gotMsg = PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
@@ -125,8 +137,18 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 				break;
 
 		}
+		t1 = clock::now();
+		fsec fs = t1 - t0;
+		t0 = t1;
+		lag += fs.count();
+		while (lag >= timestep)
+		{
+			lag -= timestep;
+			game->go(timestep);
+			//other game logic
+		}
 	}
-	delete graphics;
+	delete game;
 	return (int)msg.wParam;
 }
 
@@ -138,30 +160,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			PostQuitMessage(0);
 			return 0;
-
 		} break;
-		case WM_PAINT:
-		{
-			while (TRUE)
-			{
-				graphics->BeginDraw();
-
-				//graphics->ClearScreen(0.0f, 0.0f, 0.5f);
-				graphics->ClearScreen((rand() % 100) / 100.0f,
-					(rand() % 100) / 100.0f,
-					(rand() % 100) / 100.0f);
-
-				for (int i = 0; i < 1000; i++)
-					graphics->DrawCircle(rand() % 800, rand() % 600, rand() % 100,
-					(rand() % 100) / 100.0f,
-						(rand() % 100) / 100.0f,
-						(rand() % 100) / 100.0f,
-						(rand() % 100) / 100.0f);
-
-
-				graphics->EndDraw();
-			}
-		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
