@@ -1,7 +1,5 @@
 #include "win32.h"
 
-
-
 const char * m_windowClassName;
 HINSTANCE m_hInstance;
 
@@ -95,10 +93,19 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 		return 1;
 	}
 
+	graphics = new Graphics();
+	if (!graphics->Init(hWnd))
+	{
+		delete graphics;
+		return -1;
+	}
+
+
+
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	renderer.InitD3D(hWnd);
+
 
 	//main message loop
 	bool gotMsg;
@@ -118,11 +125,8 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 				break;
 
 		}
-
-			renderer.RenderFrame();
 	}
-
-	renderer.CleanD3D();
+	delete graphics;
 	return (int)msg.wParam;
 }
 
@@ -136,6 +140,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			return 0;
 
 		} break;
+		case WM_PAINT:
+		{
+			while (TRUE)
+			{
+				graphics->BeginDraw();
+
+				//graphics->ClearScreen(0.0f, 0.0f, 0.5f);
+				graphics->ClearScreen((rand() % 100) / 100.0f,
+					(rand() % 100) / 100.0f,
+					(rand() % 100) / 100.0f);
+
+				for (int i = 0; i < 1000; i++)
+					graphics->DrawCircle(rand() % 800, rand() % 600, rand() % 100,
+					(rand() % 100) / 100.0f,
+						(rand() % 100) / 100.0f,
+						(rand() % 100) / 100.0f,
+						(rand() % 100) / 100.0f);
+
+
+				graphics->EndDraw();
+			}
+		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
