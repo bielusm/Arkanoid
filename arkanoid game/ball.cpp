@@ -20,13 +20,13 @@ Ball::~Ball()
 void Ball::Update(float dt)
 {
 	x += dt * xVel;
-	if (x > SCREEN_WIDTH || x < 0)
+	if (x + radius> SCREEN_WIDTH || x - radius < 0)
 	{
 		xVel = -xVel;
 	}
 
 	y += dt * yVel;
-	if (y > SCREEN_WIDTH || y < 0)
+	if (y + radius > SCREEN_HEIGHT || y - radius < 0)
 	{
 		yVel = -yVel;
 	}

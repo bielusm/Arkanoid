@@ -9,7 +9,7 @@ Game::Game(HWND hWnd)
 	{
 		//error
 	}
-	ball = Ball(0, 0, 5, 100);
+	ball = Ball(100, 0, 5, 200);
 }
 
 
