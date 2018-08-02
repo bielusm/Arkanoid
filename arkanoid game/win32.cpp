@@ -152,7 +152,23 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 			p.x = xPos;
 			p.y = yPos;
 			mouse->SetPos(p);
-		}
+		} break;
+		case WM_LBUTTONDOWN:
+		{
+			mouse->leftPressed();
+		} break;
+		case WM_LBUTTONUP:
+		{
+			mouse->releaseLeft();
+		} break;
+		case WM_RBUTTONDOWN:
+		{
+			mouse->rightPressed();
+		} break;
+		case WM_RBUTTONUP:
+		{
+			mouse->releaseRight();
+		} break;
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
