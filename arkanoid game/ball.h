@@ -17,5 +17,6 @@ private:
 	float radius;
 	float xVel;
 	float yVel;
+	bool visible = true;
 };
 

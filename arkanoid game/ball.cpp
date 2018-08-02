@@ -34,6 +34,11 @@ void Ball::Update(float dt)
 
 void Ball::UpdateWithMouse(Mouse *mouse)
 {
+	if (mouse->leftPressed())
+		visible = true;
+	else
+		visible = false;
+
 	Point p = mouse->GetPos();
 	x = (float)p.x;
 	y = (float)p.y;
@@ -41,5 +46,6 @@ void Ball::UpdateWithMouse(Mouse *mouse)
 
 void Ball::Draw(Graphics *gfx)
 {
-	gfx->DrawCircle(x, y, radius, 255.0f, 0.0f, 0.0f, 1.0f);
+	if(visible)
+		gfx->DrawCircle(x, y, radius, 255.0f, 0.0f, 0.0f, 1.0f);
 }
