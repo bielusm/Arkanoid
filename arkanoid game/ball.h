@@ -18,5 +18,6 @@ private:
 	float xVel;
 	float yVel;
 	bool visible = true;
+	bool blue;
 };
 
