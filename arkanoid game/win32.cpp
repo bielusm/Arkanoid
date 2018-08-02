@@ -1,15 +1,6 @@
 #include "win32.h"
-#include <chrono>
-using namespace std::chrono_literals;
 
-//1/60fps = 16ms
-constexpr float timestep = 0.16f;
-
-const char * m_windowClassName;
-HINSTANCE m_hInstance;
-
-
-void PrintErrorMsg()
+void Window::PrintErrorMsg()
 {
 	LPTSTR errorText = NULL;
 
@@ -41,10 +32,7 @@ void PrintErrorMsg()
 	}
 }
 
-
-
-
-int CALLBACK WinMain(HINSTANCE hInstance,
+	Window::Window(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
@@ -67,7 +55,6 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	if (!RegisterClassEx(&wcex))
 	{
 		PrintErrorMsg();
-		return 1;
 	}
 
 	static TCHAR szTitle[] = _T("Windows App");
@@ -95,36 +82,26 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 	if (!hWnd)
 	{
 		PrintErrorMsg();
-		return 1;
 	}
-
-
-
-
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-
-
 	//main message loop
+
+
+	game = new Game(hWnd);
+	mouse = new Mouse();
+
 	bool gotMsg;
 	MSG msg;
 	msg.message = WM_NULL;
 	PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
 
-
-
-	typedef std::chrono::high_resolution_clock clock;
-	typedef std::chrono::milliseconds ms;
-	typedef std::chrono::duration<float> fsec;
 	float lag = 0.0f;
-
-	auto t0 = clock::now();
-	auto t1 = clock::now();
-	game = new Game(hWnd);
+	auto t0 = hrClock::now();
+	auto t1 = hrClock::now();
 	float moveAmount;
-
 	while (TRUE)
 	{
 		gotMsg = PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
@@ -137,7 +114,7 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 				break;
 
 		}
-		t1 = clock::now();
+		t1 = hrClock::now();
 		fsec fs = t1 - t0;
 		t0 = t1;
 		lag = fs.count();
@@ -146,14 +123,19 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 			moveAmount = min(timestep, lag);
 			lag -= moveAmount;
 			game->go(moveAmount);
-			//other game logic
 		}
 	}
 	delete game;
-	return (int)msg.wParam;
+	delete mouse;
+//	return (int)msg.wParam; might need to move this out of constructor for return
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+Window::~Window()
+{
+
+}
+
+LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -162,7 +144,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			PostQuitMessage(0);
 			return 0;
 		} break;
+		case WM_MOUSEMOVE:
+		{
+			int xPos = GET_X_LPARAM(lParam);
+			int yPos = GET_Y_LPARAM(lParam);
+
+		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
-
