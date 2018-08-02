@@ -89,9 +89,9 @@ void Window::PrintErrorMsg()
 
 	//main message loop
 
-
-	game = new Game(hWnd);
 	mouse = new Mouse();
+	game = new Game(hWnd, mouse);
+
 
 	bool gotMsg;
 	MSG msg;
@@ -148,7 +148,10 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			int xPos = GET_X_LPARAM(lParam);
 			int yPos = GET_Y_LPARAM(lParam);
-
+			Point p;
+			p.x = xPos;
+			p.y = yPos;
+			mouse->SetPos(p);
 		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);

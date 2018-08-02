@@ -2,13 +2,14 @@
 
 
 
-Game::Game(HWND hWnd)
+Game::Game(HWND hWnd, Mouse *mouse_in)
 {
 	gfx = new Graphics();
 	if (!gfx->Init(hWnd))
 	{
 		//error
 	}
+	mouse = mouse_in;
 	ball = Ball(100, 0, 5, 200);
 }
 
@@ -26,7 +27,8 @@ void Game::go(float dt)
 
 void Game::update(float dt)
 {
-	ball.Update(dt);
+	//ball.Update(dt);
+	ball.UpdateWithMouse(mouse);
 }
 
 void Game::draw()

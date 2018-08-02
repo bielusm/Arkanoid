@@ -1,10 +1,11 @@
 #pragma once
 #include "ball.h"
+#include "Mouse.h"
 class Game
 {
 public:
 	Game() = default;
-	Game(HWND hwnd);
+	Game(HWND hwnd, Mouse *mouse);
 	~Game();
 	void go(float dt);
 
@@ -14,5 +15,6 @@ private:
 
 	Ball ball;
 	Graphics *gfx;
+	Mouse *mouse;
 };
 

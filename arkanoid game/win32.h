@@ -15,6 +15,7 @@ typedef std::chrono::duration<float> fsec;
 using namespace std::chrono_literals;
 constexpr float timestep = 0.16f;
 
+static Mouse *mouse;
 
 class Window
 {
@@ -23,10 +24,8 @@ public:
 	~Window();
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	void PrintErrorMsg();
-private:
-	Mouse *mouse;
 	Game *game;
-
+private:
 	const char * m_windowClassName;
 	HINSTANCE m_hInstance;
 };

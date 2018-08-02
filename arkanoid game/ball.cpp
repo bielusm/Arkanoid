@@ -32,6 +32,13 @@ void Ball::Update(float dt)
 	}
 }
 
+void Ball::UpdateWithMouse(Mouse *mouse)
+{
+	Point p = mouse->GetPos();
+	x = (float)p.x;
+	y = (float)p.y;
+}
+
 void Ball::Draw(Graphics *gfx)
 {
 	gfx->DrawCircle(x, y, radius, 255.0f, 0.0f, 0.0f, 1.0f);
