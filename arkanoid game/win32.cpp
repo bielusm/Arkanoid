@@ -155,7 +155,7 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		} break;
 		case WM_LBUTTONDOWN:
 		{
-			mouse->leftPressed();
+			mouse->pressLeft();
 		} break;
 		case WM_LBUTTONUP:
 		{
@@ -163,7 +163,7 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		} break;
 		case WM_RBUTTONDOWN:
 		{
-			mouse->rightPressed();
+			mouse->pressRight();
 		} break;
 		case WM_RBUTTONUP:
 		{
