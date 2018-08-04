@@ -125,6 +125,7 @@
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Paddle.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="ball.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Point.h" />

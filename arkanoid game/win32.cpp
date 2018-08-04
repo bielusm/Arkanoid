@@ -95,7 +95,9 @@ HWND Window::createWindow()
 	UpdateWindow(hWnd);
 
 	mouse = new Mouse();
+	keyboard = new Keyboard();
 	game = new Game(hWnd, mouse);
+
 	messageLoop(hWnd);
 }
 
@@ -140,6 +142,7 @@ Window::~Window()
 {
 	delete game;
 	delete mouse;
+	delete keyboard;
 }
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -178,13 +181,11 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		} break;
 		case WM_KEYDOWN:
 		{
-			int x;
-			int virtualKey = wParam;
-			if (wParam == VK_LEFT)
-				x = 1;
-			else if (wParam == VK_RIGHT)
-				x = 2;
-
+			keyboard->pressKey((int)wParam);
+		} break;
+		case WM_KEYUP:
+		{
+			keyboard->releaseKey((int)wParam);
 		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);

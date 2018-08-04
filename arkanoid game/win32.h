@@ -8,6 +8,7 @@
 #include <chrono>
 #include <Windowsx.h>
 #include "Mouse.h"
+#include "Keyboard.h"
 
 typedef std::chrono::high_resolution_clock hrClock;
 typedef std::chrono::milliseconds ms;
@@ -16,6 +17,7 @@ using namespace std::chrono_literals;
 constexpr float timestep = 0.16f;
 
 static Mouse *mouse;
+static Keyboard *keyboard;
 
 class Window
 {
@@ -27,6 +29,7 @@ public:
 	int messageLoop(HWND hwnd);
 	HWND createWindow();
 	Game *game;
+
 private:
 	const char * m_windowClassName;
 	HINSTANCE m_hInstance;
