@@ -24,6 +24,8 @@ public:
 	~Window();
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	void PrintErrorMsg();
+	int messageLoop(HWND hwnd);
+	HWND createWindow();
 	Game *game;
 private:
 	const char * m_windowClassName;

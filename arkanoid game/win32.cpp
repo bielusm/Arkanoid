@@ -32,13 +32,8 @@ void Window::PrintErrorMsg()
 	}
 }
 
-	Window::Window(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow)
+HWND Window::createWindow()
 {
-	m_hInstance = hInstance;
-	m_windowClassName = "szWindowClass";
 	WNDCLASSEX wcex;
 	ZeroMemory(&wcex, sizeof(WNDCLASSEX));
 
@@ -47,11 +42,11 @@ void Window::PrintErrorMsg()
 	wcex.lpfnWndProc = WndProc;
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
-	wcex.hInstance = hInstance; 
+	wcex.hInstance = m_hInstance;
 	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszClassName = m_windowClassName;
-
+	
 	if (!RegisterClassEx(&wcex))
 	{
 		PrintErrorMsg();
@@ -65,7 +60,7 @@ void Window::PrintErrorMsg()
 	SetRect(&wr, 0, 0, width, height);
 	AdjustWindowRect(&wr,
 		WS_OVERLAPPEDWINDOW,
-		false ); // no menu
+		false); // no menu
 
 	HWND hWnd = CreateWindow(
 		wcex.lpszClassName,
@@ -73,35 +68,49 @@ void Window::PrintErrorMsg()
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		(wr.right-wr.left),
-		(wr.bottom-wr.top),
+		(wr.right - wr.left),
+		(wr.bottom - wr.top),
 		NULL,
 		NULL,
-		hInstance,
+		m_hInstance,
 		NULL);
 	if (!hWnd)
 	{
 		PrintErrorMsg();
 	}
 
+	return hWnd;
+}
+
+	Window::Window(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine,
+	int nCmdShow)
+	{
+	m_hInstance = hInstance;
+	m_windowClassName = "szWindowClass";
+	
+	HWND hWnd = createWindow();
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	//main message loop
-
 	mouse = new Mouse();
 	game = new Game(hWnd, mouse);
+	messageLoop(hWnd);
+}
 
-
+int Window::messageLoop(HWND hWnd)
+{
 	bool gotMsg;
+
+	float lag = 0.0f;
+	float moveAmount;
+	auto prevTime = hrClock::now();
+	auto currTime = hrClock::now();
+
 	MSG msg;
 	msg.message = WM_NULL;
 	PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
-
-	float lag = 0.0f;
-	auto t0 = hrClock::now();
-	auto t1 = hrClock::now();
-	float moveAmount;
 	while (TRUE)
 	{
 		gotMsg = PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
@@ -114,9 +123,9 @@ void Window::PrintErrorMsg()
 				break;
 
 		}
-		t1 = hrClock::now();
-		fsec fs = t1 - t0;
-		t0 = t1;
+		currTime = hrClock::now();
+		fsec fs = currTime - prevTime;
+		prevTime = currTime;
 		lag = fs.count();
 		while (lag > 0)
 		{
@@ -125,14 +134,13 @@ void Window::PrintErrorMsg()
 			game->go(moveAmount);
 		}
 	}
-	delete game;
-	delete mouse;
-//	return (int)msg.wParam; might need to move this out of constructor for return
+	return (int)msg.wParam;
 }
 
 Window::~Window()
 {
-
+	delete game;
+	delete mouse;
 }
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
