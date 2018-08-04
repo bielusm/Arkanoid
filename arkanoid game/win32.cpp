@@ -101,15 +101,15 @@ HWND Window::createWindow()
 
 int Window::messageLoop(HWND hWnd)
 {
-	bool gotMsg;
-
 	float lag = 0.0f;
 	float moveAmount;
 	auto prevTime = hrClock::now();
 	auto currTime = hrClock::now();
 
+	bool gotMsg;
 	MSG msg;
 	msg.message = WM_NULL;
+
 	PeekMessage(&msg, hWnd, 0, 0, PM_NOREMOVE);
 	while (TRUE)
 	{
@@ -121,7 +121,6 @@ int Window::messageLoop(HWND hWnd)
 
 			if (msg.message == WM_QUIT)
 				break;
-
 		}
 		currTime = hrClock::now();
 		fsec fs = currTime - prevTime;
@@ -177,6 +176,16 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 			mouse->releaseRight();
 		} break;
+		case WM_KEYDOWN:
+		{
+			int x;
+			int virtualKey = wParam;
+			if (wParam == VK_LEFT)
+				x = 1;
+			else if (wParam == VK_RIGHT)
+				x = 2;
+
+		}
 	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
