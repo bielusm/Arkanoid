@@ -39,6 +39,11 @@ void Ball::Update(float dt)
 
 }
 
+void Ball::AllowCollision()
+{
+	canCollide = true;
+}
+
 bool Ball::Collided(Rect rect)
 {
 	if (canCollide)

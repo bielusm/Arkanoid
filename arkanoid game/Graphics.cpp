@@ -44,6 +44,10 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 	brush->Release();
 }
 
+void Graphics::DrawRect(Rect rect, float r, float g, float b, float a)
+{
+	DrawRect(rect.left, rect.top, rect.right, rect.bottom, r, g, b, a);
+}
 void Graphics::DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a)
 {
 	ID2D1SolidColorBrush *brush;

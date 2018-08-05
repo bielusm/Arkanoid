@@ -2,6 +2,10 @@
 #include "ball.h"
 #include "Mouse.h"
 #include "Paddle.h"
+#include "Brick.h"
+
+#define NUM_BRICKS 80
+
 class Game
 {
 public:
@@ -19,5 +23,6 @@ private:
 	Graphics *gfx;
 	Mouse *mouse;
 	Keyboard *keyboard;
+	Brick bricks[NUM_BRICKS];
 };
 

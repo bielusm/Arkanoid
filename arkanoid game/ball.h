@@ -8,6 +8,7 @@ public:
 	Ball() = default;
 	Ball(float x, float y, float size, float vel);
 	~Ball();
+	void AllowCollision();
 	void Update(float dt);
 	bool Collided(Rect rect);
 	void UpdateWithMouse(Mouse *mouse);
