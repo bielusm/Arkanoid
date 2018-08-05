@@ -47,19 +47,14 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 void Graphics::DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a)
 {
 	ID2D1SolidColorBrush *brush;
-	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Aquamarine, 1.0f), &brush);
+	renderTarget->CreateSolidColorBrush(D2D1::ColorF(r,g,b, 1.0f), &brush);
 
 	D2D1_RECT_F rect;
-	//rect.left = left;
-	//rect.bottom = bottom;
-	//rect.right = right;
-	//rect.top = top;
+	rect.left = left;
+	rect.bottom = bottom;
+	rect.right = right;
+	rect.top = top;
 
-
-	rect.left = 50;
-	rect.bottom = 50;
-	rect.right = 300;
-	rect.top = 300;
 
 	renderTarget->DrawRectangle(rect, brush, 1.0f, NULL);
 }

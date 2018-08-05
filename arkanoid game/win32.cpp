@@ -96,7 +96,7 @@ HWND Window::createWindow()
 
 	mouse = new Mouse();
 	keyboard = new Keyboard();
-	game = new Game(hWnd, mouse);
+	game = new Game(hWnd, mouse, keyboard);
 
 	messageLoop(hWnd);
 }

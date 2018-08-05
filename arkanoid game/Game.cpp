@@ -2,7 +2,7 @@
 
 
 
-Game::Game(HWND hWnd, Mouse *mouse_in)
+Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 {
 	gfx = new Graphics();
 	if (!gfx->Init(hWnd))
@@ -11,7 +11,8 @@ Game::Game(HWND hWnd, Mouse *mouse_in)
 	}
 	mouse = mouse_in;
 	ball = Ball(100, 0, 5, 200);
-	paddle = Paddle(0, 0, 200, 200);
+	paddle = Paddle(400, 475, 500, 500);
+	keyboard = keyboard_in;
 }
 
 
@@ -30,7 +31,7 @@ void Game::update(float dt)
 {
 	//ball.Update(dt);
 	ball.UpdateWithMouse(mouse);
-	paddle.update();
+	paddle.update(keyboard, dt);
 }
 
 void Game::draw()

@@ -6,7 +6,7 @@ class Game
 {
 public:
 	Game() = default;
-	Game(HWND hwnd, Mouse *mouse);
+	Game(HWND hwnd, Mouse *mouse, Keyboard *keyboard);
 	~Game();
 	void go(float dt);
 
@@ -18,5 +18,6 @@ private:
 	Ball ball;
 	Graphics *gfx;
 	Mouse *mouse;
+	Keyboard *keyboard;
 };
 
