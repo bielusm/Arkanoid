@@ -44,28 +44,99 @@ void Ball::AllowCollision()
 	canCollide = true;
 }
 
+float Ball::Distance(Point a, Point b)
+{
+	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+}
+
+bool Ball::closer(float x, float a, float b)
+{
+	if (std::abs(a - x) - std::abs(b - x) > 0)
+		return false;
+	else
+		return true;
+}
+
+//only checks if x is closer to point need to check (x,y)
+//eventually use a quadtree
+
+
+
+ClosestPoint Ball::FindClosestPoint(Point p, Rect rect)
+{
+	float centerX = (rect.left + rect.right) / 2;
+	float centerY = (rect.top + rect.bottom) / 2;
+	Point topPoint(x, rect.top);
+	Point bottomPoint(x, rect.bottom);
+	Point leftPoint(rect.left, y);
+	Point rightPoint(rect.right, y);
+
+	if (Distance(p, topPoint) < Distance(p, bottomPoint))
+	{
+		if (Distance(p, topPoint) < Distance(p, leftPoint))
+		{
+			if (Distance(p, topPoint) < Distance(p, rightPoint))
+				return top;
+			else
+				return right;
+		}
+		else if(Distance(p, leftPoint) < Distance(p, rightPoint))
+		{
+			 return left;
+		}
+		else
+		{
+			return right;
+
+		}
+	}
+	else
+	{
+		if (Distance(p, bottomPoint) < Distance(p, leftPoint))
+		{
+			if (Distance(p, bottomPoint) < Distance(p, rightPoint))
+				return bottom;
+			else
+				return right;
+		}
+		else if(Distance(p, leftPoint) < Distance(p, rightPoint))
+		{
+			 return left;
+		}
+		else
+		{
+			return right;
+
+		}
+
+	}
+
+
+}
+
 bool Ball::Collided(Rect rect, float dt)
 {
+	ClosestPoint cp;
+
 	if (canCollide)
 	{
-		float center = (rect.left + rect.right) / 2;
-
-		if (y +radius < rect.bottom && y -radius > rect.top)
+		if (y + radius <= rect.bottom && y - radius >= rect.top && x + radius >= rect.left && x - radius <= rect.right)
 		{
-			if (x + radius > rect.left && x - radius < rect.right)
+			cp = FindClosestPoint(Point(x,y), rect);
+			switch (cp)
 			{
-				if (std::abs(x + (xVel * dt) - center) - std::abs(x - center) > 0)
-				{
-					yVel = -yVel;
-					canCollide = false;
-					return true;
-				}
-				else
-				{
-					xVel = -xVel;
-					canCollide = false;
-					return true;
-				}
+			case left:
+			case right:
+				xVel = -xVel;
+				canCollide = false;
+				return true;
+				break;
+			case top:
+			case bottom:
+				yVel = -yVel;
+				canCollide = false;
+				return true;
+				break;
 			}
 		}
 	}
@@ -99,3 +170,4 @@ void Ball::Draw(Graphics *gfx)
 			gfx->DrawCircle(x, y, radius, 255.0f, 0.0f, 0.0f, 1.0f);
 	}
 }
+
