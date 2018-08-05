@@ -2,6 +2,8 @@
 #include "Graphics.h"
 #include "Mouse.h"
 #include "Rect.h"
+#include <cmath>
+
 class Ball
 {
 public:
@@ -10,7 +12,7 @@ public:
 	~Ball();
 	void AllowCollision();
 	void Update(float dt);
-	bool Collided(Rect rect);
+	bool Collided(Rect rect, float dt);
 	void UpdateWithMouse(Mouse *mouse);
 	void Draw(Graphics *gfx);
 

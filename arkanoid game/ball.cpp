@@ -44,25 +44,29 @@ void Ball::AllowCollision()
 	canCollide = true;
 }
 
-bool Ball::Collided(Rect rect)
+bool Ball::Collided(Rect rect, float dt)
 {
 	if (canCollide)
 	{
+		float center = (rect.left + rect.right) / 2;
+
 		if (y +radius < rect.bottom && y -radius > rect.top)
 		{
 			if (x + radius > rect.left && x - radius < rect.right)
 			{
-				yVel = -yVel;
-				canCollide = false;
-				return true;
+				if (std::abs(x + (xVel * dt) - center) - std::abs(x - center) > 0)
+				{
+					yVel = -yVel;
+					canCollide = false;
+					return true;
+				}
+				else
+				{
+					xVel = -xVel;
+					canCollide = false;
+					return true;
+				}
 			}
-			else if (x + radius == rect.left || x - radius == rect.right)
-			{
-				xVel = -xVel;
-				canCollide = false;
-				return true;
-			}
-
 		}
 	}
 	return false;

@@ -41,10 +41,10 @@ void Game::go(float dt)
 
 void Game::update(float dt)
 {
-	ball.Collided(paddle.GetRect());
+	ball.Collided(paddle.GetRect(), dt);
 	for (int i = 0; i < NUM_BRICKS; i++)
 	{
-		if (!bricks[i].IsDestroyed() && ball.Collided(bricks[i].GetRect()))
+		if (!bricks[i].IsDestroyed() && ball.Collided(bricks[i].GetRect(), dt))
 		{
 			bricks[i].Destroy();
 			ball.AllowCollision();
