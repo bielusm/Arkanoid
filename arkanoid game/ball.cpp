@@ -20,19 +20,23 @@ Ball::~Ball()
 
 void Ball::Update(float dt)
 {
-	x += dt * xVel;
-	if (x + radius> SCREEN_WIDTH || x - radius < 0)
+	float moveX = dt * xVel;
+	float moveY = dt * yVel;
+	if (x + moveX + radius >= SCREEN_WIDTH || moveX + x - radius <= 0)
 	{
 		xVel = -xVel;
 		canCollide = true;
 	}
 
-	y += dt * yVel;
-	if (y + radius >= SCREEN_HEIGHT || y - radius <= 0)
+	moveY = dt * yVel;
+	if (moveY + y + radius >= SCREEN_HEIGHT || moveY + y - radius <= 0)
 	{
 		yVel = -yVel;
 		canCollide = true;
 	}
+	x += xVel * dt;
+	y += yVel * dt;
+
 }
 
 bool Ball::Collided(Rect rect)

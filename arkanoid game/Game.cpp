@@ -10,7 +10,7 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 		//error
 	}
 	mouse = mouse_in;
-	ball = Ball(100, 100, 5, 200);
+	ball = Ball(300, 300, 5, 200);
 	paddle = Paddle(400, 475, 500, 500);
 	keyboard = keyboard_in;
 }
