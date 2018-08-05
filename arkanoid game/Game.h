@@ -1,6 +1,7 @@
 #pragma once
 #include "ball.h"
 #include "Mouse.h"
+#include "Paddle.h"
 class Game
 {
 public:
@@ -13,6 +14,7 @@ private:
 	void update(float dt);
 	void draw();
 
+	Paddle paddle;
 	Ball ball;
 	Graphics *gfx;
 	Mouse *mouse;

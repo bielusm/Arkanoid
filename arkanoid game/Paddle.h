@@ -1,15 +1,19 @@
 #pragma once
+#include "Graphics.h"
+
 class Paddle
 {
 public:
-	Paddle(float x_in, float y_in, float size_in);
+	Paddle() = default;
+	Paddle(float left_in, float top_in, float right_in, float bottom_in);
 	~Paddle();
 
 	void update();
-	void draw();
+	void draw(Graphics *gfx);
 private:
-	float x;
-	float y;
-	float size;
+	float left;
+	float top;
+	float right;
+	float bottom;
 };
 

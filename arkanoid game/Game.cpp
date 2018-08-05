@@ -11,6 +11,7 @@ Game::Game(HWND hWnd, Mouse *mouse_in)
 	}
 	mouse = mouse_in;
 	ball = Ball(100, 0, 5, 200);
+	paddle = Paddle(0, 0, 200, 200);
 }
 
 
@@ -29,6 +30,7 @@ void Game::update(float dt)
 {
 	//ball.Update(dt);
 	ball.UpdateWithMouse(mouse);
+	paddle.update();
 }
 
 void Game::draw()
@@ -36,6 +38,7 @@ void Game::draw()
 	gfx->BeginDraw();
 	gfx->ClearScreen(0, 0, 0);
 	ball.Draw(gfx);
-	gfx->EndDraw();
+	paddle.draw(gfx);
+	HRESULT hres = gfx->EndDraw();
 
 }

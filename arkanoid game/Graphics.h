@@ -15,11 +15,12 @@ public:
 
 	bool Init(HWND hWnd);
 	void BeginDraw() { renderTarget->BeginDraw(); }
-	void EndDraw() { renderTarget->EndDraw(); }
+	HRESULT EndDraw() { return renderTarget->EndDraw(); }
 
 	void ClearScreen(float r, float g, float b);
 	void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
 
+	void DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a);
 private:
 	// global declarations
 	ID2D1Factory *factory;
