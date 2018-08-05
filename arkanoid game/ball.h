@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics.h"
 #include "Mouse.h"
+#include "Rect.h"
 class Ball
 {
 public:
@@ -8,10 +9,12 @@ public:
 	Ball(float x, float y, float size, float vel);
 	~Ball();
 	void Update(float dt);
+	bool Collided(Rect rect);
 	void UpdateWithMouse(Mouse *mouse);
 	void Draw(Graphics *gfx);
 
 private:
+	bool canCollide;
 	float x;
 	float y;
 	float radius;

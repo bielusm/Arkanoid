@@ -139,6 +139,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="win32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

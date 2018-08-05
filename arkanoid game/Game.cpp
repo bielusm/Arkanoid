@@ -10,7 +10,7 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 		//error
 	}
 	mouse = mouse_in;
-	ball = Ball(100, 0, 5, 200);
+	ball = Ball(100, 100, 5, 200);
 	paddle = Paddle(400, 475, 500, 500);
 	keyboard = keyboard_in;
 }
@@ -29,15 +29,15 @@ void Game::go(float dt)
 
 void Game::update(float dt)
 {
-	//ball.Update(dt);
-	ball.UpdateWithMouse(mouse);
+	ball.Collided(paddle.GetRect());
+	ball.Update(dt);
 	paddle.update(keyboard, dt);
 }
 
 void Game::draw()
 {
 	gfx->BeginDraw();
-	gfx->ClearScreen(0, 0, 0);
+	gfx->ClearScreen(255.0f, 255.0f, 255.0f);
 	ball.Draw(gfx);
 	paddle.draw(gfx);
 	HRESULT hres = gfx->EndDraw();

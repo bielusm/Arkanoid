@@ -56,5 +56,5 @@ void Graphics::DrawRect(float left, float top, float right, float bottom, float 
 	rect.top = top;
 
 
-	renderTarget->DrawRectangle(rect, brush, 1.0f, NULL);
+	renderTarget->DrawRectangle(rect, brush, 2.5f, NULL);
 }
