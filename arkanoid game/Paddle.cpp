@@ -45,5 +45,5 @@ void Paddle::update(Keyboard *kbd, float dt)
 
 void Paddle::draw(Graphics *gfx)
 {
-	gfx->DrawRect(left, top, right, bottom, 255.0f, 0.0f, 0.0f, 1.0f);
+	gfx->DrawRect(left, top, right, bottom, 255.0f, 0.0f, 0.0f, 1.0f, true);
 }

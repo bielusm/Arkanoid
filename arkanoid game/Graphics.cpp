@@ -44,11 +44,11 @@ void Graphics::DrawCircle(float x, float y, float radius, float r, float g, floa
 	brush->Release();
 }
 
-void Graphics::DrawRect(Rect rect, float r, float g, float b, float a)
+void Graphics::DrawRect(Rect rect, float r, float g, float b, float a, bool filled)
 {
-	DrawRect(rect.left, rect.top, rect.right, rect.bottom, r, g, b, a);
+	DrawRect(rect.left, rect.top, rect.right, rect.bottom, r, g, b, a, filled);
 }
-void Graphics::DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a)
+void Graphics::DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a, bool filled)
 {
 	ID2D1SolidColorBrush *brush;
 	renderTarget->CreateSolidColorBrush(D2D1::ColorF(r,g,b, 1.0f), &brush);
@@ -59,6 +59,8 @@ void Graphics::DrawRect(float left, float top, float right, float bottom, float 
 	rect.right = right;
 	rect.top = top;
 
-
-	renderTarget->DrawRectangle(rect, brush, 2.5f, NULL);
+	if(filled)
+		renderTarget->FillRectangle(&rect, brush);
+	else
+		renderTarget->DrawRectangle(rect, brush, 2.5f, NULL);
 }

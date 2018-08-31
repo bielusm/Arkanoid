@@ -21,8 +21,8 @@ public:
 	void ClearScreen(float r, float g, float b);
 	void DrawCircle(float x, float y, float radius, float r, float g, float b, float a);
 
-	void DrawRect(Rect rect, float r, float g, float b, float a);
-	void DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a);
+	void DrawRect(Rect rect, float r, float g, float b, float a, bool filled);
+	void DrawRect(float left, float top, float right, float bottom, float r, float g, float b, float a, bool filled);
 private:
 	// global declarations
 	ID2D1Factory *factory;

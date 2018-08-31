@@ -1,5 +1,8 @@
 #include "Game.h"
-
+#define RED 0
+#define BLUE 1
+#define GREEN 2
+#define NOCOLOR 3
 
 
 Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
@@ -15,15 +18,29 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 	keyboard = keyboard_in;
 	float y = 25;
 	float x = 100;
+	float r, g, b = 0;
+	int color = RED;
+	float padding = 2.5f;
+
 	for (int i = 0; i < NUM_BRICKS; i++)
 	{
-		x += 55;
+		x += 50;
 		if (i % 10 == 0)
 		{
 			y += 30;
 			x = 100;
+			color++;
+			if (color == NOCOLOR)
+				color = RED;
 		}
-			bricks[i] = Brick(x, y, x + 50, y+25);
+		if (color == RED)
+			bricks[i] = Brick(x, y, x + 50, y + 25, 255.0f, 0.0f, 0.0f, padding);
+		else if (color == GREEN)
+			bricks[i] = Brick(x, y, x + 50, y + 25, 0.0f, 255.0f, 0.0f, padding);
+		else
+		{
+			bricks[i] = Brick(x, y, x + 50, y + 25, 0.0f, 0.0f, 255.0f, padding);
+		}
 	}
 }
 
@@ -57,7 +74,7 @@ void Game::update(float dt)
 void Game::draw()
 {
 	gfx->BeginDraw();
-	gfx->ClearScreen(255.0f, 255.0f, 255.0f);
+	gfx->ClearScreen(1.0f, 1.0f, 1.0f);
 	ball.Draw(gfx);
 	paddle.draw(gfx);
 	
