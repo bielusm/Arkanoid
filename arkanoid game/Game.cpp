@@ -14,7 +14,7 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 	}
 	mouse = mouse_in;
 	ball = Ball(300, 300, 5, 200);
-	paddle = Paddle(400, 475, 500, 500);
+	paddle = Paddle(400, 475, 500, 500, 2.5f);
 	keyboard = keyboard_in;
 	float y = 25;
 	float x = 100;
@@ -27,20 +27,22 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 		x += 50;
 		if (i % 10 == 0)
 		{
-			y += 30;
+			y += 25;
 			x = 100;
 			color++;
 			if (color == NOCOLOR)
 				color = RED;
 		}
+		r = 0;
+		g = 0;
+		b = 0;
 		if (color == RED)
-			bricks[i] = Brick(x, y, x + 50, y + 25, 255.0f, 0.0f, 0.0f, padding);
+			r = 255;
 		else if (color == GREEN)
-			bricks[i] = Brick(x, y, x + 50, y + 25, 0.0f, 255.0f, 0.0f, padding);
+			g = 255;
 		else
-		{
-			bricks[i] = Brick(x, y, x + 50, y + 25, 0.0f, 0.0f, 255.0f, padding);
-		}
+			b = 255;
+		bricks[i] = Brick(x, y, x + 50, y + 25, r, g, b, padding);
 	}
 }
 

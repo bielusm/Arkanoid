@@ -156,8 +156,8 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		} break;
 		case WM_MOUSEMOVE:
 		{
-			int xPos = GET_X_LPARAM(lParam);
-			int yPos = GET_Y_LPARAM(lParam);
+			float xPos = (float)GET_X_LPARAM(lParam);
+			float yPos = (float)GET_Y_LPARAM(lParam);
 			Point p;
 			p.x = xPos;
 			p.y = yPos;

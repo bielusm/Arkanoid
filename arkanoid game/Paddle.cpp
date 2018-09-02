@@ -1,18 +1,14 @@
 #include "Paddle.h"
+#define XVEL 300.0f
 
-Paddle::Paddle(float left_in, float top_in, float right_in, float bottom_in)
+Paddle::Paddle(float left, float top, float right, float bottom, float padding_in)
 {
-	left = left_in;
-	top = top_in;
-	right = right_in;
-	bottom = bottom_in;
+	rect = Rect(left, right, top, bottom);
 
-	rect.left = left_in;
-	rect.top = top_in;
-	rect.right = right_in;
-	rect.bottom = bottom_in;
+	padding = padding_in;
+	paddedRect = rect - padding;
 
-	xVel = 300.0f;
+	xVel = XVEL;
 }
 
 Paddle::~Paddle()
@@ -28,22 +24,19 @@ void Paddle::update(Keyboard *kbd, float dt)
 {
 	if (kbd->isPressed(VK_LEFT))
 	{
-		left -= xVel * dt;
-		rect.left = left;
-		right -= xVel * dt;
-		rect.right = right;
+		rect.left -= xVel * dt;
+		rect.right -= xVel * dt;
 	}
 	else if (kbd->isPressed(VK_RIGHT))
 	{
-		right += xVel * dt;
-		rect.right = right;
-		left += xVel * dt;
-		rect.left = left;
+		rect.right += xVel * dt;
+		rect.left += xVel * dt;
 	}
-	
+	paddedRect = rect - padding;
 }
 
 void Paddle::draw(Graphics *gfx)
 {
-	gfx->DrawRect(left, top, right, bottom, 255.0f, 0.0f, 0.0f, 1.0f, true);
+	gfx->DrawRect(paddedRect, 255.0f, 0.0f, 0.0f, 1.0f, true);
+	gfx->DrawRect(rect, 0.0f, 0.0f, 0.0f, 1.0f, false);
 }
