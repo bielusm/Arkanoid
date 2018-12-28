@@ -10,7 +10,7 @@ Game::Game(HWND hWnd, Mouse *mouse_in, Keyboard *keyboard_in)
 	gfx = new Graphics();
 	if (!gfx->Init(hWnd))
 	{
-		//error
+		exit(1);
 	}
 	mouse = mouse_in;
 	ball = Ball(300, 300, 5, 200);
@@ -60,7 +60,8 @@ void Game::go(float dt)
 
 void Game::update(float dt)
 {
-	ball.Collided(paddle.GetRect(), dt);
+	if (ball.Collided(paddle.GetRect(), dt))
+		ball.AllowCollision();
 	for (int i = 0; i < NUM_BRICKS; i++)
 	{
 		if (!bricks[i].IsDestroyed() && ball.Collided(bricks[i].GetRect(), dt))

@@ -1,9 +1,6 @@
 #include "ball.h"
 #include "Graphics.h"
 
-
-
-
 Ball::Ball(float x_in, float y_in, float radius_in, float vel_in)
 {
 	x = x_in;
@@ -56,11 +53,6 @@ bool Ball::closer(float x, float a, float b)
 	else
 		return true;
 }
-
-//only checks if x is closer to point need to check (x,y)
-//eventually use a quadtree
-
-
 
 ClosestPoint Ball::FindClosestPoint(Point p, Rect rect)
 {
